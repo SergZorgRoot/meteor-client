@@ -26,7 +26,7 @@ modmenu = "20.0.1"
 orbit = "0.2.4"
 # Starscript (https://github.com/MeteorDevelopment/starscript)
 starscript = "0.2.5"
-# DiscordRPC (https://github.com/MeteorDevelopment/java-discord-rpc)
+# DiscordIPC (https://github.com/MeteorDevelopment/discord-ipc)
 discordipc = "1.1"
 # Reflections (https://github.com/ronmamo/reflections)
 reflections = "0.10.2"
