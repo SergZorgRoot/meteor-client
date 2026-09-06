@@ -36,7 +36,6 @@ public class SoundBlocker extends Module {
         for (SoundEvent sound : sounds.get()) {
             if (sound.location().equals(event.sound.getIdentifier())) {
                 event.cancel();
-                info(event.sound.getIdentifier().toString());
                 break;
             }
         }
