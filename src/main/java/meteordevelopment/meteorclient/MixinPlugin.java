@@ -36,7 +36,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
         isLithiumPresent = FabricLoader.getInstance().isModLoaded("lithium");
         isIrisPresent = FabricLoader.getInstance().isModLoaded("iris");
         isVFPPresent = FabricLoader.getInstance().isModLoaded("viafabricplus");
-        isBaritonePresent = FabricLoader.getInstance().isModLoaded("baritone");
+        isBaritonePresent = FabricLoader.getInstance().isModLoaded("baritone") || FabricLoader.getInstance().isModLoaded("baritone-meteor");
 
         loaded = true;
     }
