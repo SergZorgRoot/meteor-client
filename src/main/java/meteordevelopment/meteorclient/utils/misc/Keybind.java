@@ -7,6 +7,7 @@ package meteordevelopment.meteorclient.utils.misc;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import meteordevelopment.meteorclient.utils.misc.input.Input;
+import meteordevelopment.meteorclient.utils.misc.input.LegacyKeys;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.nbt.CompoundTag;
@@ -252,12 +253,15 @@ public class Keybind implements ISerializable<Keybind>, ICopyable<Keybind> {
                 } catch (IllegalArgumentException ignored) {}
             }
         } else {
-            // Legacy format: raw ints (GLFW)
+            // Legacy format (pre 26.3): raw GLFW key codes / button indices and GLFW modifier bits.
+            // Minecraft 26.3 switched to SDL scancodes, so the values have to be translated, not reused.
             boolean isKey = tag.getBooleanOr("isKey", true);
-            int value = tag.getIntOr("value", InputConstants.UNKNOWN.getValue());
+            int value = tag.getIntOr("value", -1);
             int mods = tag.getIntOr("modifiers", 0);
 
-            set(isKey ? keyboard(value) : mouse(value), isKey ? Modifier.fromRawValue(mods) : Set.of());
+            if (value == -1) set(InputConstants.UNKNOWN, Set.of());
+            else if (isKey) set(keyboard(LegacyKeys.keyFromGlfw(value)), Modifier.fromRawValue(LegacyKeys.modifiersFromGlfw(mods)));
+            else set(mouse(LegacyKeys.buttonFromGlfw(value)), Set.of());
         }
 
         return this;
