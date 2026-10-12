@@ -74,9 +74,13 @@ public abstract class SodiumDefaultFluidRendererMixin {
         return !otherState.getFluidState().getType().isSame(fluid.getType());
     }
 
-    @ModifyReturnValue(method = "isFluidSideExposed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;F)Z", at = @At("RETURN"))
-    private boolean onIsFluidSideExposed(boolean original, BlockState ownBlockState, BlockState neighborBlockState, Direction facing, float height) {
+    // Hooks the 5-arg overload: Sodium 0.9.2 delegates it to a 4-arg (BlockState, BlockState, Direction, float) overload,
+    // which 0.9.3 removed. `pos` is already the neighbour position in both versions.
+    @ModifyReturnValue(method = "isFluidSideExposed(Lnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;F)Z", at = @At("RETURN"))
+    private boolean onIsFluidSideExposed(boolean original, BlockAndTintGetter level, BlockState ownBlockState, BlockPos neighborPos, Direction facing, float height) {
         if (original || !forceXrayFluidSides || facing.getAxis().isVertical()) return original;
+
+        BlockState neighborBlockState = level.getBlockState(neighborPos);
         if (!xray.isBlocked(neighborBlockState.getBlock(), null)) return false;
 
         return !neighborBlockState.getFluidState().getType().isSame(ownBlockState.getFluidState().getType());
