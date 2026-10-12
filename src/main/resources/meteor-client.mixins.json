@@ -109,6 +109,7 @@
     "GameRendererMixin",
     "GlCommandEncoderMixin",
     "GlDeviceMixin",
+    "PipelineCacheMixin",
     "GuiGraphicsExtractorAccessor",
     "GuiGraphicsExtractorMixin",
     "GuiMessageMixin",
